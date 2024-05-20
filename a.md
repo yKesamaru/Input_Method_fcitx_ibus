@@ -1,6 +1,6 @@
 
-## 現在のシステムはどうなっているか、確認手順
-`systemd`のステータスを確認する
+<!-- ## 現在のシステムはどうなっているか、確認手順 -->
+<!-- `systemd`のステータスを確認する
 ```bash
 systemctl --user status ibus.service
 systemctl --user status fcitx.service
@@ -38,9 +38,9 @@ $ ps aux | grep fcitx
 - **複数のIBus関連プロセスがアクティブ**：`ibus-memconf`, `ibus-extension-gtk3`, `ibus-x11`, `ibus-portal`, `ibus-engine-simple` および `ibus-engine-mozc` など、複数のIBus関連プロセスがシステム上で稼働
 
 - **Fcitx メインプロセスが実行中**：`fcitx` プロセス→Fcitxのメイン入力メソッドフレームワーク
-- **FcitxのD-Bus設定**：`/usr/bin/dbus-daemon` がFcitx専用のD-Busデーモンとして実行されてる。この設定は、Fcitxが独自のD-Bus接続を通じて他のアプリケーションと通信できるようにするためのもの。
+- **FcitxのD-Bus設定**：`/usr/bin/dbus-daemon` がFcitx専用のD-Busデーモンとして実行されてる。この設定は、Fcitxが独自のD-Bus接続を通じて他のアプリケーションと通信できるようにするためのもの。 -->
 
-`im-config -a`
+<!-- `im-config -a`
 ![](assets/2024-05-20-15-02-56.png)
 > Current configuration for the input method:
 >  * Default mode defined in /etc/default/im-config: 'auto'
@@ -64,17 +64,17 @@ $ im-config -l
 ```bash
 im-config -o
 /usr/bin/im-config: 88: .: cannot open /usr/share/im-config/data/??_.conf: No such file
-```
+``` -->
 
-![](assets/2024-05-20-14-22-36.png)
-①はiBus、②はFcitxが表示されている。
+<!-- ![](assets/2024-05-20-14-22-36.png)
+①はiBus、②はFcitxが表示されている。 -->
 
-現状、`.xinputrc`ファイルは存在しない。
-`im-config`コマンドを用いてインプットメソッドを指定した場合のみ、`.xinputrc`ファイルが作成され、そこに記述される。
+<!-- 現状、`.xinputrc`ファイルは存在しない。
+`im-config`コマンドを用いてインプットメソッドを指定した場合のみ、`.xinputrc`ファイルが作成され、そこに記述される。 -->
 
-## fcitxの削除
-このような状況なので、fcitxをアンインストールすることにした。
-```bash
+<!-- ## fcitxの削除
+このような状況なので、fcitxをアンインストールすることにした。 -->
+<!-- ```bash
 # fcitxを含むパッケージを確認
 apt list --installed | grep fcitx
 fcitx-bin/jammy,now 1:4.2.9.8-5 amd64 [インストール済み、自動]
@@ -138,12 +138,12 @@ im-config -n ibus
 # 再起動
 ```
 ![](assets/2024-05-20-15-46-48.png)
-fcitxのトレイアイコンが消えた。
+fcitxのトレイアイコンが消えた。 -->
 
-`ibus-setup`にてibus全般のセットアップを行う。
-![](assets/2024-05-20-16-01-53.png)
+<!-- `ibus-setup`にてibus全般のセットアップを行う。
+![](assets/2024-05-20-16-01-53.png) -->
 
-### ibusの足りない機能
+<!-- ### ibusの足りない機能
 1. 入力メソッドの切り替えショートカットが1種類しかな
    1. 異なるキーにen⇔jaが切り替えられない
 2. クリップボード機能が使えない
@@ -168,7 +168,7 @@ ibus engine mozc-jp
 ![](assets/2024-05-20-16-40-33.png)
 これについては解決法が見つかりませんでした。（あまり困りませんが）
 また、入力モードは以下のようにしておく必要があります。
-![](assets/2024-05-20-16-48-27.png)
+![](assets/2024-05-20-16-48-27.png) -->
 
 
 
@@ -182,7 +182,7 @@ ibus engine mozc-jp
 ![](assets/2024-05-20-16-59-10.png)
 
 
-## 前提知識
+<!-- ## 前提知識
 Linux システムでは、ユーザーのセッションが開始される際に複数の設定ファイルが読み込まれます。これらのファイルは、ユーザー環境の設定やシェルの振る舞いをカスタマイズするために使用されます。ここでは、一般的な設定ファイルである .xprofile, .bashrc, .bash_profile について説明します。
 
 ### 各設定ファイルの役割
@@ -208,14 +208,14 @@ Linux システムでは、ユーザーのセッションが開始される際�
 - `systemd`はこのファイル形式を使用して、ログイン時の環境変数を設定する
 - この方式は`systemd`を使用するような新し目のバージョンで普及しつつある（Ubuntu 22.04では採用していない）
 - 特定のシェルやログイン方法に依存しない汎用的な方法
-  `.bashrc`, `.bash_profile`, `.xprofile`はBashだし、`.xprofile`はXセッションだし、という感じ。
+  `.bashrc`, `.bash_profile`, `.xprofile`はBashだし、`.xprofile`はXセッションだし、という感じ。 -->
 
-### iBus
+<!-- ### iBus
 [wikipedia](https://ja.wikipedia.org/wiki/IBus)
 > IBus（アイバス、Intelligent Input Bus）はUnix系オペレーティングシステム (OS) におけるインプットメソッドフレームワークである。IBusのBusはバスのような構造を持つところから来ている。
 
-### Snap, Flatpakにおける日本語入力
-#### Snapにおける日本語入力の背景
+### Snap, Flatpakにおける日本語入力 -->
+<!-- #### Snapにおける日本語入力の背景
 - Snapアプリケーションは基本的にホストシステムの環境変数や設定を直接引き継ぐことができない。ゆえに、`GTK_IM_MODULE`, `QT_IM_MODULE`, `XMODIFIERS`などの環境変数や設定を反映させることができない。そのため、これらの設定は明示的にSnap内で設定する必要がある。
 - 開発者が日本語入力をサポートするために必要なライブラリをパッケージに含めている必要がある。
 - ユーザーとしては、Snapアプリケーションが期待する入力メソッドと整合性を持つようにシステムを調整する必要が求められる。
@@ -280,7 +280,7 @@ Flatpakアプリケーションがサンドボックス外のシステムリソ�
 ###### Flatpakにおけるアプリケーションの権限の確認と管理
 ```bash
 flatpak override --user --device=all [application-id]
-```
+``` -->
 
 
 <!-- ## そもそもの修正動機
@@ -375,7 +375,7 @@ flatpak override --user --device=all [application-id]
 - 特に日本語入力の動作を各アプリケーションで確認し、問題が解決されているかを評価します。 -->
 
 
-## `xdg-desktop-portal`について。
+<!-- ## `xdg-desktop-portal`について。
 ### `xdg`
 XDGは「X Desktop Group」の略で、後に「freedesktop.org」と改名.
 `xdg-desktop-portal` は、サンドボックス化されたアプリケーション（例えばFlatpakやSnapパッケージ）が、セキュリティ制約を保ちつつホストシステムのリソースやサービス（ファイルアクセス、カメラ、位置情報サービスなど）にアクセスできるようにするためのバックエンドサービス。
@@ -385,7 +385,7 @@ XDGは「X Desktop Group」の略で、後に「freedesktop.org」と改名.
 
 ### GNOME環境で、`xdg-desktop-portal-kde`は必要か？
 必要ない。
-通常、xdg-desktop-portal-gnome や xdg-desktop-portal-kde は、それぞれGNOMEとKDEのデスクトップ環境向けに特化した実装を提供する
+通常、xdg-desktop-portal-gnome や xdg-desktop-portal-kde は、それぞれGNOMEとKDEのデスクトップ環境向けに特化した実装を提供する -->
 <!-- 
 ## 参考文献
 - [WaylandとGNOME環境でfcitx5 + mozcがサードパーティアプリで機能しない問題を解決する方法](https://zenn.dev/moxak/articles/b1e7792be705ed)
