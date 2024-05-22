@@ -97,7 +97,7 @@ System:
 - わたしの環境は現在`x11`ですが、もし`wayland`を使うようなら日本語環境構築の設定をこちらに書かねばならないと思われます。
 - `***.conf`のアスタリスク部分は任意のわかりやすいファイル名が良いと思います。例えば`~/config/environment.d/japanese-input.conf`など。
 - このファイルは`systemd`がユーザーセッション開始時にロードされます。
-- 将来`wayland`を使う予定があるなら（おそらくその通りですが）、`.xprofile`に記述した以下の設定をこちら（`~/.config/environment.d/***.conf`）に記述し、`.xprofile`の方は記述を消去したほうがいいかも知れません。（`Ubuntu 22.04`には、`~/.config/environment.d/`ディレクトリが存在しないので、新規に作成する必要があります。ただし、CUIでの日本語入力設定のため、`~/.bashrc`には記述を保持したほうが良いです。個々の設定の記述は主にGUI環境に影響するので。）
+- 将来`wayland`を使う予定があるなら（おそらくその通りですが）、`.xprofile`に記述した以下の設定をこちら（`~/.config/environment.d/***.conf`）に記述し、`.xprofile`の方は記述を消去したほうがいいかも知れません。（`Ubuntu 22.04`には、`~/.config/environment.d/`ディレクトリが存在しないので、新規に作成する必要があります。ただし、CUIでの日本語入力設定のため、`~/.bashrc`には記述を保持したほうが良いです。ここの設定の記述は主にGUI環境に影響するので。）
 ```bash
 GTK_IM_MODULE=ibus
 QT_IM_MODULE=ibus
@@ -106,7 +106,7 @@ XMODIFIERS=@im=ibus
 
 ##### 補足：`systemd`が管轄するディレクトリ
 上記の`~/.config/environment.d/`ディレクトリの他にも、`systemd`が管轄するディレクトリがあります。
-たとえば`~/.config/systemd/user/`ディレクトリに、わたしは定期実行してほしいファイル（ユニットファイル）を配置しています。個々に置かれたサービスは`cron`よりも`at`に動作が近く、非常に便利です。
+たとえば`~/.config/systemd/user/`ディレクトリに、わたしは定期実行してほしいファイル（ユニットファイル）を配置しています。ここに置かれたサービスは`cron`よりも`at`に動作が近く、非常に便利です。
 他には以下のようなものがあります。
 - `~/.config/environment.d/`
   - ユーザーセッション開始時にロードされる環境変数設定ファイルを配置
@@ -245,7 +245,7 @@ flatpak override --user --device=all [application-id]
 ```bash
 sudo flatpak --system override --env="GTK_IM_MODULE=fcitx QT_IM_MODULE=fcitx XMODIFIERS='@im=fcitx'" org.gnucash.GnuCash
 ```
-通常であれば、`.xprofile`（X11の場合）か`~/.config/environment.d/***.conf`（Waylandあるいは任意）に以下のように記述します。
+通常であれば、`.xprofile`（X11の場合）か`~/.config/environment.d/***.conf`（Waylandあるいは任意）に以下のように記述します。（`.xprofile`の場合は先頭に`export`をつけてください。）
 ```bash
 GTK_IM_MODULE=ibus
 QT_IM_MODULE=ibus
