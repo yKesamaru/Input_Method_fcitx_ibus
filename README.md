@@ -3,6 +3,8 @@
 現在わたしのシステムでは、Snapアプリケーションが日本語入力を受け付けない、IBusとFcitxが混在しているなど、日本語入力周りの小さな問題が山積しています。
 そこで今回、IBusやFcitxの問題をスッキリ整理し、日本語入力周りの用語などの確認も兼ねてドキュメントとしてまとめようと思います。
 
+追記更新：2024年5月22日
+
 ![](https://raw.githubusercontent.com/yKesamaru/Input_Method_fcitx_ibus/master/assets/2024-05-21-17-19-41.png)
 
 1. [日本語入力周りの整理・まとめ](#日本語入力周りの整理まとめ)
@@ -97,9 +99,9 @@ System:
 - このファイルは`systemd`がユーザーセッション開始時にロードされます。
 - 将来`wayland`を使う予定があるなら（おそらくその通りですが）、`.xprofile`に記述した以下の設定をこちら（`~/.config/environment.d/***.conf`）に記述し、`.xprofile`の方は記述を消去したほうがいいかも知れません。（`Ubuntu 22.04`には、`~/.config/environment.d/`ディレクトリが存在しないので、新規に作成する必要があります。ただし、CUIでの日本語入力設定のため、`~/.bashrc`には記述を保持したほうが良いです。個々の設定の記述は主にGUI環境に影響するので。）
 ```bash
-export GTK_IM_MODULE=ibus
-export QT_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
+GTK_IM_MODULE=ibus
+QT_IM_MODULE=ibus
+XMODIFIERS=@im=ibus
 ```
 
 ##### 補足：`systemd`が管轄するディレクトリ
@@ -264,7 +266,27 @@ sudo flatpak --system override --talk-name=org.fcitx.Fcitx --talk-name=org.freed
 ```
 はFlatpakアプリケーションがFcitxの入力メソッドフレームワークと通信できるように許可を上書きしています。ただし、システム全体に作用させてしまうため、個人的な設定なら`sudo`を外し`--user`とすると良いと思います。
 
-例えばFlatpakアプリケーションが日本語入力をサポートしていないか、サポートに不完全性があった場合、上記のコマンドラインは有用かもしれません。
+例えばFlatpakアプリケーションが日本語入力をサポートしていないか、サポートに不完全性があった場合、上記のコマンドラインは有用かもしれません。ただ同サイトの参照先である[fcitx stop working at flatpak 1.0.0 #2031](https://github.com/flatpak/flatpak/issues/2031)に書かれているようにセキュリティ的には微妙です。（Fcitxに関してはFixされたとのこと）
+また、闇雲にこれらを試すのではなく、[alexlarsson commented on Apr 12, 2019](https://github.com/flatpak/flatpak/issues/2031#issuecomment-482568508)に書かれているように、セッションで発生しているD-Busメッセージのリアルタイム監視や、FlatpakアプリケーションがD-Busセッションバス上でやり取りしてる通信をロギングする、など行うといいかも知れません。
+例えば以下のような感じです。
+```bash
+# D-Busのメッセージのリアルタイム監視
+dbus-monitor --session
+# D-Bus通信をログに記録
+## アプリID取得
+flatpak list
+flatpak run --log-session-bus org.example.App
+```
+ただ、そこまで労力をかけて日本語入力にこだわるかどうか、と言われると、これも微妙です。
+
+  どうでもいいことですが、`flatpak list`した時に`Krita 財団`って出力されたんですけど、財団なんですね…。
+  ```bash
+  $ flatpak list
+  Name                                        Application ID                                            Version        Branch           Installation
+  PDF Arranger                                com.github.jeromerobert.pdfarranger                       1.10.1         stable           system
+  Krita 財団                                  org.kde.krita                                             5.2.2          stable           system
+```
+
 上記は`Fcitx`の場合ですので、`IBus`版を以下に紹介します。
 ```bash
 # 環境変数をIBusに設定
@@ -576,3 +598,4 @@ sudo apt install -y flatpak gnome-software gnome-software-plugin-flatpak
 - [Flatpak vs. Snap. 違いと特性](https://zenn.dev/ykesamaru/articles/a9586cc52a376e)
 - [How to install Flatpak application](https://flathub.org/setup/Ubuntu)
 - [Flatpakアプリで日本語入力ができないときにする2つの事](https://www.nofuture.tv/20200229)
+  - [ fcitx stop working at flatpak 1.0.0 #2031 ](https://github.com/flatpak/flatpak/issues/2031)
