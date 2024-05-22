@@ -142,7 +142,7 @@ export XMODIFIERS=@im=ibus
 通常多くのSnapアプリケーションはインストール時に基本的なプラグとスロットの接続を自動的に行います。
 これはSnapcraft.yamlに定義されている`auto-connect`プロパティによるもの。
 ユーザーによる手動接続には`snap connect`コマンドを利用します。
-**ただし、後述のFlatpakの`override`と同様、`snap connect`コマンドはデバイスへのアクセスを許可するもので、日本語入力の可否に影響を及ぼすものではありません。**
+**ただし、後述のFlatpakの`override`と同様、`snap connect`コマンドはデバイスへのアクセスを許可するもので、日本語入力の可否に影響を及ぼすものではありません。**（例外も後述）
 Snap Store, Software CenterなどでSnapアプリケーション個々の権限管理を行うこともできます。
 また、一部のSnapアプリケーションでは特定のリソースへのアクセスを要求する際、動的にダイアログを表示するものもあります。これはSnapの標準的な挙動ではなく、開発者が独自に実装する場合のみです。
 
@@ -229,12 +229,51 @@ flatpak info --show-permissions [application-id]
 試していませんが[Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal)を用いても権限の確認を行うことができると思います。
 ![](https://raw.githubusercontent.com/yKesamaru/Input_Method_fcitx_ibus/master/assets/2024-05-21-15-43-24.png)
 
-URLを忘れてしまいましたが、権限の上書きによって日本語入力ができるようになると書いてありました。多分これは無理です。権限を上書きすればデバイスなどへのアクセスはできるようになりますが、日本語入力には関係しません。
+権限を上書きすればデバイスなどへのアクセスはできるようになりますが、日本語入力には関係しません。
 たとえば、以下のコマンドラインは権限を上書きする例です。
 ```bash
 # パーミッションの上書き（override)
 flatpak override --user --device=all [application-id]
 ```
+
+以下のようにする方法もあります。
+
+[Flatpakアプリで日本語入力ができないときにする2つの事](https://www.nofuture.tv/20200229)
+こちらのサイトで以下のコマンドラインを使用されています。
+```bash
+sudo flatpak --system override --env="GTK_IM_MODULE=fcitx QT_IM_MODULE=fcitx XMODIFIERS='@im=fcitx'" org.gnucash.GnuCash
+```
+通常であれば、`.xprofile`（X11の場合）か`~/.config/environment.d/***.conf`（Waylandあるいは任意）に以下のように記述します。
+```bash
+GTK_IM_MODULE=ibus
+QT_IM_MODULE=ibus
+XMODIFIERS=@im=ibus
+```
+上記の設定があれば通常は問題ありません。
+ただし、Flatpakアプリケーションが外部の環境変数を無視して異なる内部設定をしている場合、`flatpak override --env=`を使用することで問題が解決する可能性があります。バグの対処法として以下のようにすると良いでしょう。
+```bash
+flatpak override --user --env="GTK_IM_MODULE=ibus" --env="QT_IM_MODULE=ibus" --env="XMODIFIERS=@im=ibus" org.example.MyApp
+```
+また、同サイトでは以下の方法も試されていました。
+```bash
+sudo flatpak --system override --talk-name=org.fcitx.Fcitx --talk-name=org.freedesktop.portal.Fcitx <app-id>
+```
+`--talk-name`オプションは、指定したFlatpakアプリケーションが指定したD-Busサービスと通信させるためのものです。例えば上記の場合、
+```bash
+--talk-name=org.fcitx.Fcitx
+```
+はFlatpakアプリケーションがFcitxの入力メソッドフレームワークと通信できるように許可を上書きしています。ただし、システム全体に作用させてしまうため、個人的な設定なら`sudo`を外し`--user`とすると良いと思います。
+
+例えばFlatpakアプリケーションが日本語入力をサポートしていないか、サポートに不完全性があった場合、上記のコマンドラインは有用かもしれません。
+上記は`Fcitx`の場合ですので、`IBus`版を以下に紹介します。
+```bash
+# 環境変数をIBusに設定
+flatpak override --user --env="GTK_IM_MODULE=ibus" --env="QT_IM_MODULE=ibus" --env="XMODIFIERS=@im=ibus" org.example.MyApp
+
+# IBusとの通信を許可
+flatpak override --user --talk-name=org.freedesktop.IBus org.example.MyApp
+```
+
 
 ### 3. その他
 #### `xdg-desktop-portal`について。
@@ -536,3 +575,4 @@ sudo apt install -y flatpak gnome-software gnome-software-plugin-flatpak
 - [Blenderで日本語入力を実装するには](https://zenn.dev/hzuika/articles/2021-07-31-blender_ime)
 - [Flatpak vs. Snap. 違いと特性](https://zenn.dev/ykesamaru/articles/a9586cc52a376e)
 - [How to install Flatpak application](https://flathub.org/setup/Ubuntu)
+- [Flatpakアプリで日本語入力ができないときにする2つの事](https://www.nofuture.tv/20200229)
