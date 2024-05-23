@@ -291,19 +291,22 @@ flatpak run --log-session-bus org.example.App
 
 
 追記：2024年5月23日
+
 ![](https://raw.githubusercontent.com/yKesamaru/Input_Method_fcitx_ibus/master/assets/2024-05-23_19-21.png)
 `Flatseal`にて環境変数を上書きしたところ（②）、日本語の直接入力が可能となりました。
-![](https://raw.githubusercontent.com/yKesamaru/Input_Method_fcitx_ibus/massets/2024-05-23-21-30-24.png)
+
+![](https://raw.githubusercontent.com/yKesamaru/Input_Method_fcitx_ibus/master/assets/2024-05-23-21-30-24.png)
+
 追記ここまで
 
 
-  どうでもいいことですが、`flatpak list`した時に`Krita 財団`って出力されたんですけど、財団なんですね…。
-  ```bash
-  $ flatpak list
-  Name                                        Application ID                                            Version        Branch           Installation
-  PDF Arranger                                com.github.jeromerobert.pdfarranger                       1.10.1         stable           system
-  Krita 財団                                  org.kde.krita                                             5.2.2          stable           system
-```
+> どうでもいいことですが、`flatpak list`した時に`Krita 財団`って出力されたんですけど、財団なんですね…。
+> ```bash
+> $ flatpak list
+> Name                                        Application ID                                            Version        Branch           Installation
+> PDF Arranger                                com.github.jeromerobert.pdfarranger                       1.10.1         stable           system
+> Krita 財団                                  org.kde.krita                                             5.2.2          stable           system
+> ```
 
 上記は`Fcitx`の場合ですので、`IBus`版を以下に紹介します。
 ```bash
