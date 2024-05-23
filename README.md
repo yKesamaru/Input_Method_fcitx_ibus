@@ -228,15 +228,25 @@ Flatpakアプリケーションがサンドボックス外のシステムリソ�
 # パーミッションの確認
 flatpak info --show-permissions [application-id]
 ```
-試していませんが[Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal)を用いても権限の確認を行うことができると思います。
+```diff: 2024年5月23日
+- 試していませんが[Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal)を用いても権限の確認を行うことができると思います。
++ Flatsealにて環境変数を上書きしたところ、日本語が通るようになりました（後述）。
+```
+
 ![](https://raw.githubusercontent.com/yKesamaru/Input_Method_fcitx_ibus/master/assets/2024-05-21-15-43-24.png)
 
-権限を上書きすればデバイスなどへのアクセスはできるようになりますが、日本語入力には関係しません。
+```diff: 2024年5月23日
+- 権限を上書きすればデバイスなどへのアクセスはできるようになりますが、日本語入力には関係しません。
++ 権限はデバイスの他に環境変数の上書きなど多岐の目的に利用できます。
+```
+
+
 たとえば、以下のコマンドラインは権限を上書きする例です。
 ```bash
 # パーミッションの上書き（override)
 flatpak override --user --device=all [application-id]
 ```
+
 
 以下のようにする方法もあります。
 
@@ -278,6 +288,14 @@ flatpak list
 flatpak run --log-session-bus org.example.App
 ```
 ただ、そこまで労力をかけて日本語入力にこだわるかどうか、と言われると、これも微妙です。
+
+
+追記：2024年5月23日
+![](https://raw.githubusercontent.com/yKesamaru/Input_Method_fcitx_ibus/master/assets/2024-05-23_19-21.png)
+`Flatseal`にて環境変数を上書きしたところ（②）、日本語の直接入力が可能となりました。
+![](https://raw.githubusercontent.com/yKesamaru/Input_Method_fcitx_ibus/massets/2024-05-23-21-30-24.png)
+追記ここまで
+
 
   どうでもいいことですが、`flatpak list`した時に`Krita 財団`って出力されたんですけど、財団なんですね…。
   ```bash
